@@ -4,9 +4,11 @@
  */
 package de.payone.prototype.transactions;
 
-import java.util.Collection;
-import java.util.HashSet;
+import static org.joda.money.CurrencyUnit.EUR;
 
+import java.util.Collection;
+
+import org.apache.commons.lang.Validate;
 import org.joda.money.Money;
 import org.joda.time.DateTime;
 
@@ -15,15 +17,30 @@ import org.joda.time.DateTime;
  * 
  */
 public class AccountingTransaction {
-    private final Collection<AccountEntry> entries = new HashSet<AccountEntry>();
+    private final Collection<Booking> bookings;
 
     @SuppressWarnings("javadoc")
-    public AccountingTransaction(Money amount, Account from, Account to, DateTime date) {
-        AccountEntry fromEntry = new AccountEntry(amount, date);
-        from.credit(fromEntry);
-        entries.add(fromEntry);
-        AccountEntry toEntry = new AccountEntry(amount, date);
-        to.debit(toEntry);
-        entries.add(toEntry.negate());
+    public AccountingTransaction(Collection<Booking> bookings, DateTime date) {
+        assertBookingsSumUpToZero(bookings);
+        this.bookings = bookings;
+    }
+
+    public void post() {
+        assertBookingsSumUpToZero(bookings);
+        for (Booking b : bookings) {
+            b.post();
+        }
+
+    }
+
+    /**
+     * @param bookings
+     */
+    private void assertBookingsSumUpToZero(Collection<Booking> bookings) {
+        Money sum = Money.zero(EUR);
+        for (Booking b : bookings) {
+            sum.plus(b.getAmount());
+        }
+        Validate.isTrue(Money.zero(EUR).equals(sum), "Transaction must sum up to ZERO!");
     }
 }
