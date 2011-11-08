@@ -39,7 +39,7 @@ public class AccountingTransaction {
     private void assertBookingsSumUpToZero(Collection<Booking> bookings) {
         Money sum = Money.zero(EUR);
         for (Booking b : bookings) {
-            sum.plus(b.getAmount());
+            sum = sum.plus(b.getAmount());
         }
         Validate.isTrue(Money.zero(EUR).equals(sum), "Transaction must sum up to ZERO!");
     }

@@ -10,6 +10,7 @@ import org.joda.money.Money;
  * @author Guido Zockoll
  * 
  */
+@SuppressWarnings("javadoc")
 public abstract class Booking {
 
     protected Account account;
@@ -17,9 +18,14 @@ public abstract class Booking {
 
     /**
      * Create a new Booking.
+     * 
+     * @param account
+     * @param amount
      */
-    public Booking() {
+    public Booking(Account account, Money amount) {
         super();
+        this.account = account;
+        this.amount = amount;
     }
 
     /**

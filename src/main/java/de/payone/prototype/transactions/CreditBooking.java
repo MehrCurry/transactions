@@ -12,6 +12,17 @@ import org.joda.money.Money;
  */
 public class CreditBooking extends Booking {
 
+    /**
+     * Create a new CreditBooking.
+     * 
+     * @param account
+     * @param amount
+     */
+    public CreditBooking(Account account, Money amount) {
+        super(account, amount);
+        // TODO Auto-generated constructor stub
+    }
+
     /*
      * (non-Javadoc)
      * 
