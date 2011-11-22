@@ -9,7 +9,10 @@ import static org.joda.money.CurrencyUnit.EUR;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.joda.money.Money;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Guido Zockoll
@@ -17,6 +20,7 @@ import org.joda.money.Money;
  */
 @SuppressWarnings("javadoc")
 public class Account {
+    private static final Logger logger = LoggerFactory.getLogger(Account.class);
     private final List<AccountEntry> credits = new ArrayList<AccountEntry>();
     private final List<AccountEntry> debits = new ArrayList<AccountEntry>();
 
@@ -30,6 +34,7 @@ public class Account {
 
     public void credit(Money amount) {
         credits.add(new AccountEntry(amount));
+        logger.debug("Credit: " + toString());
     }
 
     /**
@@ -37,7 +42,7 @@ public class Account {
      */
     public void debit(AccountEntry anEntry) {
         debits.add(anEntry);
-
+        logger.debug("Debit: " + toString());
     }
 
     /**
@@ -57,5 +62,15 @@ public class Account {
             balance = balance.minus(e.getAmount());
         }
         return balance;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return new ReflectionToStringBuilder(this) + "Balance: " + getBalance();
     }
 }
