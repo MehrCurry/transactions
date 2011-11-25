@@ -15,6 +15,7 @@ public abstract class Booking {
 
     protected Account account;
     protected Money amount;
+    protected String text = "";
 
     /**
      * Create a new Booking.
@@ -29,6 +30,20 @@ public abstract class Booking {
     }
 
     /**
+     * Create a new Booking.
+     * 
+     * @param account
+     * @param amount
+     * @param text
+     */
+    public Booking(Account account, Money amount, String text) {
+        super();
+        this.account = account;
+        this.amount = amount;
+        this.text = text;
+    }
+
+    /**
      * @return the account
      */
     public Account getAccount() {
@@ -40,6 +55,13 @@ public abstract class Booking {
      */
     public Money getAmount() {
         return amount;
+    }
+
+    /**
+     * @return the text
+     */
+    public String getText() {
+        return text;
     }
 
     public abstract void post();

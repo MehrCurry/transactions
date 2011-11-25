@@ -33,6 +33,20 @@ public class AccountingTransactionTest {
         AccountingTransaction tx = new AccountingTransaction(Arrays.asList(bookings), DateTime.now());
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void double_post_should_throw_exception() {
+        Account from = new Account();
+        Account to = new Account();
+
+        Money ten = Money.ofMajor(CurrencyUnit.EUR, 10);
+
+        Booking[] bookings = { new CreditBooking(from, ten), new DebitBooking(to, ten) };
+
+        AccountingTransaction tx = new AccountingTransaction(Arrays.asList(bookings), DateTime.now());
+        tx.post();
+        tx.post();
+    }
+
     /**
      * Test method for
      * {@link de.payone.prototype.transactions.AccountingTransaction#AccountingTransaction(java.util.Collection, org.joda.time.DateTime)}

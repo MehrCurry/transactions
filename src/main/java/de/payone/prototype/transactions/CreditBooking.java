@@ -11,7 +11,6 @@ import org.joda.money.Money;
  * 
  */
 public class CreditBooking extends Booking {
-
     /**
      * Create a new CreditBooking.
      * 
