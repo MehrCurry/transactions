@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import de.payone.prototype.transactions.entity.Account;
 import de.payone.prototype.transactions.entity.AccountEntry;
 
 @Service
@@ -22,8 +23,11 @@ public class BookingService {
 	private EntityManager em;
 
 	public void doSomething() {
+
+		Account account = new Account();
+		em.persist(account);
 		AccountEntry entry = new AccountEntry(Money.of(EUR, 10));
-		em.persist(entry);
-		logger.debug(entry.toString());
+		account.credit(entry);
+		em.persist(account);
 	}
 }

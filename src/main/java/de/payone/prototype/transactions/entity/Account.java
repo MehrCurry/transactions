@@ -4,12 +4,14 @@
  */
 package de.payone.prototype.transactions.entity;
 
-import static org.joda.money.CurrencyUnit.EUR;
+import static org.joda.money.CurrencyUnit.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
@@ -25,9 +27,11 @@ import org.slf4j.LoggerFactory;
 @Entity
 public class Account extends AbstractEntity {
 	private static final Logger logger = LoggerFactory.getLogger(Account.class);
-	@OneToMany
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinTable(name = "ACCOUNTS_CREDITS")
 	private final List<AccountEntry> credits = new ArrayList<AccountEntry>();
-	@OneToMany
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinTable(name = "ACCOUNTS_DEBITS")
 	private final List<AccountEntry> debits = new ArrayList<AccountEntry>();
 
 	/**

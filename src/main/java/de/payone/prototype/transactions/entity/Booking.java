@@ -4,11 +4,14 @@
  */
 package de.payone.prototype.transactions.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.OneToOne;
 
+import org.hibernate.annotations.Columns;
+import org.hibernate.annotations.Type;
 import org.joda.money.Money;
 
 /**
@@ -22,6 +25,8 @@ public abstract class Booking extends AbstractEntity {
 
 	@OneToOne
 	protected Account account;
+	@Type(type = "de.payone.prototype.transactions.types.MoneyType")
+	@Columns(columns = { @Column(name = "amount"), @Column(name = "currency") })
 	protected Money amount;
 	protected String text = "";
 
