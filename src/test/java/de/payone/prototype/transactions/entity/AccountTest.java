@@ -2,7 +2,7 @@
  * Created 26.10.2011
  * This code is copyright (c) 2004 PAYONE Gmbh & Co. KG.
  */
-package de.payone.prototype.transactions;
+package de.payone.prototype.transactions.entity;
 
 import static org.hamcrest.core.Is.is;
 import static org.joda.money.CurrencyUnit.EUR;
@@ -12,6 +12,8 @@ import org.joda.money.CurrencyUnit;
 import org.joda.money.Money;
 import org.junit.Before;
 import org.junit.Test;
+
+import de.payone.prototype.transactions.entity.Account;
 
 /**
  * @author Guido Zockoll
@@ -33,7 +35,7 @@ public class AccountTest {
     }
 
     /**
-     * Test method for {@link de.payone.prototype.transactions.Account#getBalance()}.
+     * Test method for {@link de.payone.prototype.transactions.entity.Account#getBalance()}.
      */
     @Test
     public void testGetBalance() {

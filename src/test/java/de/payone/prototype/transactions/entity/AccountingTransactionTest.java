@@ -2,7 +2,7 @@
  * Created 08.11.2011
  * This code is copyright (c) 2004 PAYONE Gmbh & Co. KG.
  */
-package de.payone.prototype.transactions;
+package de.payone.prototype.transactions.entity;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -13,6 +13,12 @@ import org.joda.money.CurrencyUnit;
 import org.joda.money.Money;
 import org.joda.time.DateTime;
 import org.junit.Test;
+
+import de.payone.prototype.transactions.entity.Account;
+import de.payone.prototype.transactions.entity.AccountingTransaction;
+import de.payone.prototype.transactions.entity.Booking;
+import de.payone.prototype.transactions.entity.CreditBooking;
+import de.payone.prototype.transactions.entity.DebitBooking;
 
 /**
  * @author Guido Zockoll
@@ -49,7 +55,7 @@ public class AccountingTransactionTest {
 
     /**
      * Test method for
-     * {@link de.payone.prototype.transactions.AccountingTransaction#AccountingTransaction(java.util.Collection, org.joda.time.DateTime)}
+     * {@link de.payone.prototype.transactions.entity.AccountingTransaction#AccountingTransaction(java.util.Collection, org.joda.time.DateTime)}
      * .
      */
     @Test
