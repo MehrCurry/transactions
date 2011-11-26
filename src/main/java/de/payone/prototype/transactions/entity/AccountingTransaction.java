@@ -4,11 +4,12 @@
  */
 package de.payone.prototype.transactions.entity;
 
-import static org.joda.money.CurrencyUnit.EUR;
+import static org.joda.money.CurrencyUnit.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 
@@ -28,7 +29,7 @@ public class AccountingTransaction extends AbstractEntity {
 	private static Logger logger = LoggerFactory
 			.getLogger(AccountingTransaction.class);
 
-	@OneToMany
+	@OneToMany(cascade = CascadeType.ALL)
 	private final Collection<Booking> bookings = new ArrayList<Booking>();
 	private boolean posted = false;
 
