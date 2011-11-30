@@ -13,7 +13,7 @@
         <ReconnectionDelay>10000</ReconnectionDelay>
         <IncludeCallerData>true</IncludeCallerData>
         <RemoteHosts>localhost</RemoteHosts>
-        <ApplicationIdentifier>Actor-Role
+        <ApplicationIdentifier>transactions
         </ApplicationIdentifier>
         <encoding>UTF-8</encoding>
     </appender>
@@ -36,6 +36,10 @@
             </pattern>
         </encoder>
     </appender>
+
+    <logger name="org.hibernate.type" level="DEBUG" />
+    <logger name="org.hibernate" level="DEBUG" />
+    <logger name="de.payone.prototype.transactions" level="ALL" />
 
     <root level="INFO">
         <appender-ref ref="CONSOLE" />
