@@ -73,4 +73,20 @@ public class AccountingTransactionTest {
         assertThat(ten.negated(), is(from.getBalance()));
     }
 
+    @Test
+    public void testBuilder() {
+        Account from = new Account();
+        Account to = new Account();
+        Account tax = new Account();
+
+        Money m119 = Money.ofMajor(CurrencyUnit.EUR, 119);
+        Money m100 = Money.ofMajor(CurrencyUnit.EUR, 100);
+        Money m19 = Money.ofMajor(CurrencyUnit.EUR, 19);
+        AccountingTransaction tx = AccountingTransaction.builder().debit(from, m119).credit(to, m100).credit(tax, m19)
+                .build();
+        assertThat(tx.canPost(), is(true));
+        tx.post();
+        assertThat(m100, is(to.getBalance()));
+        assertThat(m19, is(tax.getBalance()));
+    }
 }

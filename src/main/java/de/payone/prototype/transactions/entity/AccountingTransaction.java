@@ -26,94 +26,111 @@ import org.slf4j.LoggerFactory;
  */
 @Entity
 public class AccountingTransaction extends AbstractEntity {
-	private static Logger logger = LoggerFactory
-			.getLogger(AccountingTransaction.class);
+    private static Logger logger = LoggerFactory.getLogger(AccountingTransaction.class);
 
-	@OneToMany(cascade = CascadeType.ALL)
-	private final Collection<Booking> bookings = new ArrayList<Booking>();
-	private boolean posted = false;
+    @OneToMany(cascade = CascadeType.ALL)
+    private final Collection<Booking> bookings = new ArrayList<Booking>();
+    private boolean posted = false;
 
-	@SuppressWarnings("javadoc")
-	public AccountingTransaction(Collection<Booking> bookings, DateTime date) {
-		assertBalanceIsZero(bookings);
-		this.bookings.addAll(bookings);
-	}
+    @SuppressWarnings("javadoc")
+    public AccountingTransaction(Collection<Booking> bookings, DateTime date) {
+        assertBalanceIsZero(bookings);
+        this.bookings.addAll(bookings);
+    }
 
-	/**
-	 * Create a new AccountingTransaction.
-	 * 
-	 * @param d
-	 */
-	public AccountingTransaction(DateTime d) {
-		// TODO Auto-generated constructor stub
-	}
+    /**
+     * Create a new AccountingTransaction.
+     */
+    private AccountingTransaction() {
+    }
 
-	/**
-	 * @return
-	 */
-	public Money balance() {
-		return balance(bookings);
-	}
+    /**
+     * @return
+     */
+    public Money balance() {
+        return balance(bookings);
+    }
 
-	public boolean canPost() {
-		return balance().isZero();
-	}
+    public boolean canPost() {
+        return balance().isZero();
+    }
 
-	// public AccountingTransaction inverse(DateTime d) {
-	// AccountingTransaction trans = new AccountingTransaction(d);
-	// for (Booking b : bookings) {
-	// trans.add(b.amount.negated(), b.getAccount(), "Storno: " + b.getText());
-	// }
-	// return trans;
-	// }
+    // public AccountingTransaction inverse(DateTime d) {
+    // AccountingTransaction trans = new AccountingTransaction(d);
+    // for (Booking b : bookings) {
+    // trans.add(b.amount.negated(), b.getAccount(), "Storno: " + b.getText());
+    // }
+    // return trans;
+    // }
 
-	public void post() {
-		logger.debug("Posting: " + this);
-		Validate.isTrue(!posted, "Transaction already posted!");
-		Validate.isTrue(canPost(), "Transaction balance != 0");
-		for (Booking b : bookings) {
-			b.post();
-		}
-		posted = true;
+    public void post() {
+        logger.debug("Posting: " + this);
+        Validate.isTrue(!posted, "Transaction already posted!");
+        Validate.isTrue(canPost(), "Transaction balance != 0");
+        for (Booking b : bookings) {
+            b.post();
+        }
+        posted = true;
 
-	}
+    }
 
-	/**
-	 * @param bookings2
-	 */
-	private void assertBalanceIsZero(Collection<Booking> bookings) {
-		Validate.isTrue(balance(bookings).isZero(),
-				"Transaction must sum up to ZERO!");
-	}
+    /**
+     * @param bookings2
+     */
+    private void assertBalanceIsZero(Collection<Booking> bookings) {
+        Validate.isTrue(balance(bookings).isZero(), "Transaction must sum up to ZERO!");
+    }
 
-	/**
-	 * @param someBookings
-	 * @param bookings
-	 * @return
-	 */
-	private Money balance(Collection<Booking> someBookings) {
-		Money sum = Money.zero(EUR);
-		for (Booking b : someBookings) {
-			sum = sum.plus(b.getAmount());
-		}
-		return sum;
-	}
+    /**
+     * @param someBookings
+     * @param bookings
+     * @return
+     */
+    private Money balance(Collection<Booking> someBookings) {
+        Money sum = Money.zero(EUR);
+        for (Booking b : someBookings) {
+            sum = sum.plus(b.getAmount());
+        }
+        return sum;
+    }
 
-	/**
-	 * @param creditBooking
-	 */
-	public void add(Booking b) {
-		Validate.isTrue(!posted, "Transaction already posted!");
-		bookings.add(b);
-	}
+    /**
+     * @param creditBooking
+     */
+    public void add(Booking b) {
+        Validate.isTrue(!posted, "Transaction already posted!");
+        bookings.add(b);
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return new ReflectionToStringBuilder(this).toString();
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return new ReflectionToStringBuilder(this).toString();
+    }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Builder {
+        private AccountingTransaction tx = new AccountingTransaction();
+
+        public Builder debit(Account account, Money amount) {
+            tx.add(new DebitBooking(account, amount));
+            return this;
+        }
+
+        public Builder credit(Account account, Money amount) {
+            tx.add(new CreditBooking(account, amount));
+            return this;
+        }
+
+        public AccountingTransaction build() {
+            return tx;
+        }
+    }
 }
